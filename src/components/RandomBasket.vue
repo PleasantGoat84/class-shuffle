@@ -10,7 +10,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Prop, Vue } from "vue-property-decorator";
 import RandomStick, { StickOption } from "@/components/RandomStick.vue"; // @ is an alias to /src
 
 @Component({
@@ -19,6 +19,11 @@ import RandomStick, { StickOption } from "@/components/RandomStick.vue"; // @ is
   }
 })
 export default class RandomBasket extends Vue {
+  // props
+  @Prop() private maxCount!: number;
+
+  // statics
+
   static readonly widthVW = 15;
   static readonly heightVW = RandomBasket.widthVW * 1.09005;
   static readonly innerBottomOffsetVW = RandomBasket.widthVW * 0.14457;
@@ -27,9 +32,19 @@ export default class RandomBasket extends Vue {
     RandomBasket.widthVW * 0.89868 -
     RandomStick.heightVH * (window.innerHeight / window.innerWidth);
 
+  // stick stuff
+
   private stickOptions: Array<StickOption> = [];
+  private stickId: { [key: number]: boolean } = {};
+
+  // generator
 
   private genStickOption(): StickOption {
+    let id;
+    do {
+      id = Math.floor(Math.random() * this.maxCount);
+    } while (this.stickId[id] !== undefined);
+
     const x = Math.random();
     const y = Math.random();
 
@@ -42,11 +57,13 @@ export default class RandomBasket extends Vue {
 
     const t = -(Math.random() * (maxRotate - minRotate) + minRotate);
 
-    return { x, y, t };
+    return { x, y, t, id };
   }
 
+  // hooks
+
   created() {
-    for (let i = 0; i < 36; i++) {
+    for (let i = 0; i < this.maxCount; i++) {
       this.stickOptions.push(this.genStickOption());
       // console.debug(this.stickOptions[i]);
       // this.stickOptions.push({ x: 1, t: -Math.PI * 0.5 });

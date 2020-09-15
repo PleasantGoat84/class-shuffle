@@ -1,7 +1,7 @@
 <template>
   <div class="home d-flex align-center justify-center fill-height">
     <div>
-      <RandomBasket />
+      <RandomBasket max-count="36" />
 
       <v-btn color="primary" class="mt-10">抽籤</v-btn>
     </div>

@@ -1,5 +1,11 @@
 <template>
-  <div class="stick" :style="style" />
+  <div
+    class="stick d-flex align-center"
+    :style="style"
+    :id="`stick-${option.id}`"
+  >
+    <span class="id font-weight-bold" :style="idStyle">{{ option.id }}</span>
+  </div>
 </template>
 
 <script lang="ts">
@@ -10,6 +16,7 @@ export interface StickOption {
   x: number;
   y: number;
   t: number;
+  id: number;
 }
 
 @Component
@@ -19,6 +26,8 @@ export default class RandomStick extends Vue {
   static readonly borderRatio = 0.2;
   static readonly borderWidthVH =
     RandomStick.heightVH * RandomStick.borderRatio;
+  static readonly idFontSizeVH =
+    (RandomStick.heightVH - RandomStick.borderWidthVH) * 0.75;
 
   static readonly defaultStyle = {
     width: RandomStick.widthVH + "vh",
@@ -41,17 +50,25 @@ export default class RandomStick extends Vue {
         "vw",
 
       bottom:
-        RandomBasket.innerBottomOffsetVW + (this.option.y * 1 - 0.5) + "vw",
+        RandomBasket.innerBottomOffsetVW + (this.option.y * 4 - 1.5) + "vw",
 
-      transform: `rotateZ(${this.option.t}rad)`
+      transform: `rotateZ(${this.option.t}rad)`,
+
+      background: `linear-gradient(${
+        this.option.t < -Math.PI / 2 ? "to top" : "to bottom"
+      },  wheat, #f9d694)`
     };
+  }
+
+  get idStyle(): { [key: string]: string } {
+    return { "font-size": RandomStick.idFontSizeVH + "vh" };
   }
 }
 </script>
 
 <style lang="scss" scoped>
 .stick {
-  background: wheat;
+  // background: wheat;
   border: solid burlywood;
 
   z-index: 2;
@@ -60,5 +77,16 @@ export default class RandomStick extends Vue {
   transform-origin: center left;
 
   position: absolute;
+
+  // text display
+  .id {
+    position: relative;
+    left: 0.75em;
+
+    color: peru;
+    // padding-left: 0.75em;
+    transform-origin: center center;
+    transform: rotateZ(-90deg);
+  }
 }
 </style>
