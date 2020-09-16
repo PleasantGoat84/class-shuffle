@@ -82,6 +82,7 @@ export default class RandomBasket extends Vue {
 <style lang="scss" scoped>
 .basket-container {
   position: relative;
+  width: 15vw;
 
   .basket {
     position: relative;
