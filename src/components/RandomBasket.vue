@@ -5,7 +5,12 @@
       :key="i"
       :option="option"
     />
-    <img src="@/assets/basket.png" alt="basket" class="basket" />
+    <img
+      src="@/assets/basket.png"
+      alt="basket"
+      class="basket"
+      style="opacity: 0.1"
+    />
   </div>
 </template>
 
@@ -43,7 +48,9 @@ export default class RandomBasket extends Vue {
     let id;
     do {
       id = Math.floor(Math.random() * this.maxCount);
+      console.debug(id);
     } while (this.stickId[id] !== undefined);
+    this.stickId[id] = true;
 
     const x = Math.random();
     const y = Math.random();
