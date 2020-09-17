@@ -22,7 +22,7 @@
     <div
       class="d-flex flex-column align-start flex-wrap"
       id="name-list"
-      v-if="status > 0"
+      v-if="status > 0 && status < 3"
       :class="{ mini: status > 1 }"
     >
       <div v-for="(stu, i) in stuList" :key="i" class="stu">
@@ -67,7 +67,7 @@ export default class Home extends Vue {
 
   readonly stuCount = 36;
 
-  private status = 0;
+  status = 0;
   // private status = 2;
   private stuRandId: Array<number> = [];
 

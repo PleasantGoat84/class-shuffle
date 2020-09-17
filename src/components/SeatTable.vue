@@ -1,5 +1,5 @@
 <template>
-  <table class="seat-table">
+  <table class="seat-table" :class="{ zoom: $parent.status > 2 }">
     <tr v-for="(row, i) in cells" :key="i">
       <td v-for="(cell, j) in row" :key="j">
         <span
@@ -52,9 +52,7 @@ export default class SeatTable extends Vue {
 
     this.$set(this.cells, r, rowCopy);
 
-    let handler = () => {
-      return;
-    };
+    let handler: () => void;
 
     if (c + 1 <= this.colCount - 1)
       handler = () => {
@@ -63,6 +61,10 @@ export default class SeatTable extends Vue {
     else if (c + 1 > this.colCount - 1 && r + 1 <= this.rowCount - 1)
       handler = () => {
         this.matchCallback(r + 1, 0);
+      };
+    else
+      handler = () => {
+        this.$parent.status = 3;
       };
 
     setTimeout(handler, 200);
@@ -115,16 +117,19 @@ export default class SeatTable extends Vue {
   position: absolute;
   right: 3vw;
 
-  width: 50vw;
-  height: 33vw;
+  $width: 50vw;
+  $height: $width * 0.6;
+
+  width: $width;
+  height: $height;
 
   border-collapse: collapse;
 
   td {
-    width: (50vw / 6);
-    border: solid burlywood;
+    width: $width / 6;
+    border: solid 0.25em burlywood;
 
-    font-size: (33vw /6 * 0.35);
+    font-size: ($height / 6 * 0.35);
 
     .id {
       color: wheat;
@@ -132,6 +137,18 @@ export default class SeatTable extends Vue {
       &.not-yet {
         color: #a3b2bf;
       }
+    }
+  }
+
+  &.zoom {
+    position: static;
+
+    width: 75vw;
+    height: 75vw * 0.6;
+
+    td {
+      width: 75vw / 6;
+      font-size: 75vw * 0.6 / 6 * 0.35;
     }
   }
 }
