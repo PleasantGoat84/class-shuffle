@@ -1,16 +1,11 @@
 <template>
-  <div class="basket-container">
+  <div class="basket-container" ref="container">
     <RandomStick
       v-for="(option, i) in stickOptions"
       :key="i"
       :option="option"
     />
-    <img
-      src="@/assets/basket.png"
-      alt="basket"
-      class="basket"
-      style="opacity: 0.1"
-    />
+    <img src="@/assets/basket.png" alt="basket" class="basket" />
   </div>
 </template>
 
@@ -48,7 +43,7 @@ export default class RandomBasket extends Vue {
     let id;
     do {
       id = Math.floor(Math.random() * this.maxCount);
-      console.debug(id);
+      // console.debug(id);
     } while (this.stickId[id] !== undefined);
     this.stickId[id] = true;
 
@@ -64,7 +59,21 @@ export default class RandomBasket extends Vue {
 
     const t = -(Math.random() * (maxRotate - minRotate) + minRotate);
 
-    return { x, y, t, id };
+    return { x, y, t, id: id + 1, picked: false };
+  }
+
+  // methods
+
+  randPick(): StickOption {
+    let idx;
+
+    do {
+      idx = Math.floor(Math.random() * this.stickOptions.length);
+    } while (this.stickOptions[idx].picked);
+
+    this.stickOptions[idx].picked = true;
+
+    return this.stickOptions[idx];
   }
 
   // hooks
@@ -87,7 +96,7 @@ export default class RandomBasket extends Vue {
   .basket {
     position: relative;
 
-    margin-top: 30vh;
+    margin-top: 18vh;
 
     width: 15vw;
     z-index: 3;

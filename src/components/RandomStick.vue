@@ -1,6 +1,7 @@
 <template>
   <div
     class="stick d-flex align-center"
+    :class="{ picked: option.picked }"
     :style="style"
     :id="`stick-${option.id}`"
   >
@@ -17,6 +18,7 @@ export interface StickOption {
   y: number;
   t: number;
   id: number;
+  picked: boolean;
 }
 
 @Component
@@ -39,7 +41,7 @@ export default class RandomStick extends Vue {
 
   @Prop() private option!: StickOption;
 
-  get style(): { [key: string]: string } {
+  private get style(): { [key: string]: string } {
     return {
       ...RandomStick.defaultStyle,
 
@@ -60,7 +62,7 @@ export default class RandomStick extends Vue {
     };
   }
 
-  get idStyle(): { [key: string]: string } {
+  private get idStyle(): { [key: string]: string } {
     return { "font-size": RandomStick.idFontSizeVH + "vh" };
   }
 }
@@ -77,6 +79,10 @@ export default class RandomStick extends Vue {
   transform-origin: center left;
 
   position: absolute;
+
+  &.picked {
+    display: none !important;
+  }
 
   // text display
   .id {
