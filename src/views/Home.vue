@@ -4,8 +4,9 @@
       class="d-flex flex-column align-center"
       id="basket-outer-wrapper"
       :class="{ mini: status > 0 }"
+      v-if="status < 2"
     >
-      <RandomBasket max-count="36" ref="basket" />
+      <RandomBasket :max-count="stuCount" ref="basket" />
 
       <v-btn
         color="primary"
@@ -39,18 +40,22 @@
         </span>
       </div>
     </div>
+
+    <SeatTable v-if="status > 1" />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import RandomBasket from "@/components/RandomBasket.vue";
+import SeatTable from "@/components/SeatTable.vue";
 
 import stuList from "@/data/stu/4/1";
 
 @Component({
   components: {
-    RandomBasket
+    RandomBasket,
+    SeatTable
   }
 })
 export default class Home extends Vue {
@@ -60,8 +65,19 @@ export default class Home extends Vue {
 
   private readonly stuList = stuList;
 
+  readonly stuCount = 36;
+
   private status = 0;
+  // private status = 2;
   private stuRandId: Array<number> = [];
+
+  getStuRandId() {
+    return this.stuRandId;
+  }
+
+  getStu(id: number) {
+    return this.stuList[id];
+  }
 
   private startRandom() {
     this.status = 1;
@@ -77,11 +93,11 @@ export default class Home extends Vue {
     if (i < this.stuList.length - 1)
       setTimeout(() => {
         this.randCallback(i + 1);
-      }, 100);
+      }, 200);
     else
       setTimeout(() => {
         this.status = 2;
-      }, 3500);
+      }, 5000);
   }
 }
 </script>
@@ -121,6 +137,8 @@ export default class Home extends Vue {
   $name-per-row: 15;
   max-height: $name-list-height;
 
+  $stu-width: 7.5em;
+
   .stu {
     position: relative;
 
@@ -128,10 +146,10 @@ export default class Home extends Vue {
     font-size: $name-list-height / $name-per-row * 0.75;
 
     text-align: left;
-    width: 7.5em;
+    width: $stu-width;
 
     padding-left: 1.5em;
-    margin-right: 3em;
+    margin-right: 2.5em;
 
     .id {
       position: absolute;
@@ -143,8 +161,20 @@ export default class Home extends Vue {
       position: absolute;
       right: 0;
 
+      color: burlywood;
+
       &.not-yet {
         color: #a3b2bf;
+      }
+    }
+  }
+
+  &.mini {
+    .stu {
+      width: $stu-width - 4.5em;
+
+      .name {
+        display: none;
       }
     }
   }
