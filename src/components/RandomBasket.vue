@@ -29,8 +29,7 @@ export default class RandomBasket extends Vue {
   static readonly innerBottomOffsetVW = RandomBasket.widthVW * 0.14457;
   static readonly innerLeftOffsetVW = (RandomBasket.widthVW * 0.10131) / 2;
   static readonly innerWidthVW =
-    RandomBasket.widthVW * 0.89868 -
-    RandomStick.heightVH * (window.innerHeight / window.innerWidth);
+    RandomBasket.widthVW * 0.89868 - RandomStick.heightVW;
 
   // stick stuff
 

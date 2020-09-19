@@ -120,7 +120,7 @@ export default class SeatTable extends Vue {
   position: absolute;
   right: 3vw;
 
-  $width: 50vw;
+  $width: 64vw;
   $height: $width * 0.6;
 
   width: $width;
@@ -146,12 +146,14 @@ export default class SeatTable extends Vue {
   &.zoom {
     position: static;
 
-    width: 75vw;
-    height: 75vw * 0.6;
+    $zoom-width: 80vw;
+
+    width: $zoom-width;
+    height: $zoom-width * 0.6;
 
     td {
-      width: 75vw / 6;
-      font-size: 75vw * 0.6 / 6 * 0.35;
+      width: $zoom-width / 6;
+      font-size: $zoom-width / 6 * 0.2 * 0.95;
     }
   }
 }

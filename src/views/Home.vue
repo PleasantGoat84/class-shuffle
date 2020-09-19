@@ -137,7 +137,7 @@ export default class Home extends Vue {
 
   &.mini {
     transform-origin: right bottom;
-    transform: scale(0.8, 0.8);
+    // transform: scale(0.8, 0.8);
 
     position: fixed;
     right: 2vw;
@@ -150,10 +150,10 @@ export default class Home extends Vue {
   left: 3vw;
 
   $name-list-height: 95vh;
-  $name-per-row: 15;
+  $name-per-row: 20;
   max-height: $name-list-height;
 
-  $stu-width: 7.5em;
+  $stu-width: 7em;
 
   .stu {
     position: relative;
@@ -165,7 +165,7 @@ export default class Home extends Vue {
     width: $stu-width;
 
     padding-left: 1.5em;
-    margin-right: 2.5em;
+    margin-right: 2em;
 
     .id {
       position: absolute;

@@ -11,7 +11,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
-import RandomBasket from "./RandomBasket.vue";
+import RandomBasket from "@/components/RandomBasket.vue";
 
 export interface StickOption {
   x: number;
@@ -23,20 +23,20 @@ export interface StickOption {
 
 @Component
 export default class RandomStick extends Vue {
-  static readonly widthVH = 50;
-  static readonly heightVH = RandomStick.widthVH / 13;
+  static readonly widthVW = 15 * 1.6;
+  static readonly heightVW = RandomStick.widthVW / 15;
   static readonly borderRatio = 0.2;
-  static readonly borderWidthVH =
-    RandomStick.heightVH * RandomStick.borderRatio;
-  static readonly idFontSizeVH =
-    (RandomStick.heightVH - RandomStick.borderWidthVH) * 0.75;
+  static readonly borderWidthVW =
+    RandomStick.heightVW * RandomStick.borderRatio;
+  static readonly idFontSizeVW =
+    (RandomStick.heightVW - RandomStick.borderWidthVW) * 0.75;
 
   static readonly defaultStyle = {
-    width: RandomStick.widthVH + "vh",
-    height: RandomStick.heightVH + "vh",
+    width: RandomStick.widthVW + "vw",
+    height: RandomStick.heightVW + "vw",
 
-    "border-width": RandomStick.borderWidthVH + "vh",
-    "border-radius": RandomStick.heightVH / 2 + "vh"
+    "border-width": RandomStick.borderWidthVW + "vw",
+    "border-radius": RandomStick.heightVW / 2 + "vw"
   };
 
   @Prop() private option!: StickOption;
@@ -46,8 +46,8 @@ export default class RandomStick extends Vue {
       ...RandomStick.defaultStyle,
 
       left:
-        RandomBasket.innerLeftOffsetVW +
-        RandomStick.heightVH * RandomStick.borderRatio +
+        RandomBasket.innerLeftOffsetVW * 1.2 +
+        RandomStick.heightVW * RandomStick.borderRatio +
         this.option.x * RandomBasket.innerWidthVW +
         "vw",
 
@@ -63,7 +63,7 @@ export default class RandomStick extends Vue {
   }
 
   private get idStyle(): { [key: string]: string } {
-    return { "font-size": RandomStick.idFontSizeVH + "vh" };
+    return { "font-size": RandomStick.idFontSizeVW + "vw" };
   }
 }
 </script>
