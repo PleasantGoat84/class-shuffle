@@ -10,11 +10,16 @@
           {{ cell.id === undefined ? "?" : cell.id }}
         </span>
         <span
-          class="name"
+          class="name d-flex flex-column justify-center"
           v-else
           :class="{ red: cell.stu.name.zh === '張鎮揚' && false }"
         >
-          {{ cell.stu.name.zh }}
+          <span class="zh">
+            {{ cell.stu.name.zh }}
+          </span>
+          <span class="en">
+            {{ cell.stu.name.en }}
+          </span>
         </span>
       </td>
     </tr>
@@ -128,11 +133,13 @@ export default class SeatTable extends Vue {
 
   border-collapse: collapse;
 
+  // line-height: 1.3em;
+
   td {
     width: $width / 6;
     border: solid 0.25em burlywood;
 
-    font-size: ($height / 6 * 0.35);
+    font-size: ($height / 6 / 2 * 0.6);
 
     .id {
       color: wheat;
@@ -141,19 +148,26 @@ export default class SeatTable extends Vue {
         color: #a3b2bf;
       }
     }
+
+    .name {
+      .en {
+        font-size: 70%;
+      }
+    }
   }
 
   &.zoom {
     position: static;
 
-    $zoom-width: min(80vw, 166.67vh);
+    $zoom-width: min(90vw, 150vh);
 
     width: $zoom-width;
-    height: calc($zoom-width * 0.6);
+    height: calc(#{$zoom-width} * 0.6);
 
     td {
-      width: calc($zoom-width / 6);
-      font-size: calc($zoom-width / 6 * 0.2 * 0.95);
+      width: calc(#{$zoom-width} / 6);
+      height: calc(#{$zoom-width} * 0.6 / 6);
+      font-size: calc(#{$zoom-width} / 6 / 2 * 0.37);
     }
   }
 }
