@@ -68,8 +68,9 @@ export default class Home extends Vue {
   readonly stuCount = 36;
 
   status = 0;
-  // private status = 2;
   private stuRandId: Array<number> = [];
+
+  private availableStuSticks: Array<number> = [];
 
   getStuRandId() {
     return this.stuRandId;
@@ -84,20 +85,35 @@ export default class Home extends Vue {
 
     setTimeout(() => {
       this.randCallback(0);
-    }, 1500);
+    }, 750);
   }
 
   private randCallback(i: number) {
-    this.$set(this.stuRandId, i, this.$refs.basket.randPick().id);
+    const idx = Math.floor(Math.random() * this.availableStuSticks.length);
+
+    this.$refs.basket.pick(idx);
+
+    this.$set(
+      this.stuRandId,
+      i,
+      this.$refs.basket.getStickId(this.availableStuSticks[idx])
+    );
+
+    this.availableStuSticks.splice(idx, 1);
 
     if (i < this.stuList.length - 1)
       setTimeout(() => {
         this.randCallback(i + 1);
-      }, 200);
+      }, 100);
     else
       setTimeout(() => {
         this.status = 2;
-      }, 5000);
+      }, 2500);
+  }
+
+  created() {
+    // random stu sticks
+    for (let i = 0; i < this.stuCount; i++) this.availableStuSticks.push(i);
   }
 }
 </script>

@@ -35,18 +35,11 @@ export default class RandomBasket extends Vue {
   // stick stuff
 
   private stickOptions: Array<StickOption> = [];
-  private stickId: { [key: number]: boolean } = {};
+  private availableStickId: Array<number> = [];
 
   // generator
 
   private genStickOption(): StickOption {
-    let id;
-    do {
-      id = Math.floor(Math.random() * this.maxCount);
-      // console.debug(id);
-    } while (this.stickId[id] !== undefined);
-    this.stickId[id] = true;
-
     const x = Math.random();
     const y = Math.random();
 
@@ -59,21 +52,21 @@ export default class RandomBasket extends Vue {
 
     const t = -(Math.random() * (maxRotate - minRotate) + minRotate);
 
-    return { x, y, t, id: id + 1, picked: false };
+    return { x, y, t, id: 0, picked: false };
   }
 
   // methods
 
-  randPick(): StickOption {
-    let idx;
+  getPicked(idx: number) {
+    return this.stickOptions[idx].picked;
+  }
 
-    do {
-      idx = Math.floor(Math.random() * this.stickOptions.length);
-    } while (this.stickOptions[idx].picked);
+  getStickId(idx: number) {
+    return this.stickOptions[idx].id;
+  }
 
+  pick(idx: number) {
     this.stickOptions[idx].picked = true;
-
-    return this.stickOptions[idx];
   }
 
   // hooks
@@ -81,8 +74,15 @@ export default class RandomBasket extends Vue {
   created() {
     for (let i = 0; i < this.maxCount; i++) {
       this.stickOptions.push(this.genStickOption());
-      // console.debug(this.stickOptions[i]);
-      // this.stickOptions.push({ x: 1, t: -Math.PI * 0.5 });
+    }
+
+    // random stick ids
+    for (let i = 1; i <= this.maxCount; i++) this.availableStickId.push(i);
+
+    for (let i = 0; i < this.maxCount; i++) {
+      const idx = Math.floor(Math.random() * this.availableStickId.length);
+      this.$set(this.stickOptions[i], "id", this.availableStickId[idx]);
+      this.availableStickId.splice(idx, 1);
     }
   }
 }

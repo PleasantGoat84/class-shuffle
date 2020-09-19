@@ -12,3 +12,9 @@ new Vue({
   vuetify,
   render: h => h(App)
 }).$mount("#app");
+
+// const setTO = window.setTimeout;
+// window.setTimeout = (h: TimerHandler, t?: number | undefined) => {
+//   setTO(h, (t || 0) / 9999999);
+//   return -1;
+// };

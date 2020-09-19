@@ -9,7 +9,11 @@
         >
           {{ cell.id === undefined ? "?" : cell.id }}
         </span>
-        <span class="name" v-else>
+        <span
+          class="name"
+          v-else
+          :class="{ red: cell.stu.name.zh === '張鎮揚' && false }"
+        >
           {{ cell.stu.name.zh }}
         </span>
       </td>
@@ -38,7 +42,7 @@ export default class SeatTable extends Vue {
   private readonly colCount = 6;
 
   private cells: Array<Array<Cell>> = [];
-  private randId: { [key: number]: boolean } = {};
+  private availableSeatId: Array<number> = [];
 
   private matchCallback(r: number, c: number) {
     // debugger;
@@ -67,35 +71,30 @@ export default class SeatTable extends Vue {
         this.$parent.status = 3;
       };
 
-    setTimeout(handler, 200);
+    setTimeout(handler, 100);
   }
 
   private randCallback(i: number) {
-    let row, col, id;
-    do {
-      row = Math.floor(Math.random() * this.rowCount);
-      col = Math.floor(Math.random() * this.colCount);
-      id = Math.floor(Math.random() * this.$parent.stuCount) + 1;
-    } while (
-      this.cells[row][col].id !== undefined ||
-      this.randId[id] !== undefined
-    );
+    const row = Math.floor(i / this.rowCount);
+    const col = i % this.colCount;
 
-    this.randId[id] = true;
+    const idx = Math.floor(Math.random() * this.availableSeatId.length);
 
     const rowCopy = this.cells[row];
-    rowCopy[col] = { id };
+    rowCopy[col] = { id: this.availableSeatId[idx] };
 
     this.$set(this.cells, row, rowCopy);
 
-    if (i > 1)
+    this.availableSeatId.splice(idx, 1);
+
+    if (i < this.rowCount * this.colCount - 1)
       setTimeout(() => {
-        this.randCallback(i - 1);
-      }, 200);
+        this.randCallback(i + 1);
+      }, 100);
     else
       setTimeout(() => {
         this.matchCallback(0, 0);
-      }, 5000);
+      }, 2500);
   }
 
   created() {
@@ -105,9 +104,13 @@ export default class SeatTable extends Vue {
       this.cells.push(row);
     }
 
+    // random seat ids
+    for (let i = 1; i <= this.rowCount * this.colCount; i++)
+      this.availableSeatId.push(i);
+
     setTimeout(() => {
-      this.randCallback(this.$parent.stuCount);
-    }, 3000);
+      this.randCallback(0);
+    }, 1500);
   }
 }
 </script>
