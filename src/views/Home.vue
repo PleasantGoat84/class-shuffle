@@ -1,5 +1,5 @@
 <template>
-  <div class="home d-flex align-center justify-center fill-height">
+  <div class="home d-flex align-center justify-center" style="height: 100%;">
     <div
       class="d-flex flex-column align-center"
       id="basket-outer-wrapper"
