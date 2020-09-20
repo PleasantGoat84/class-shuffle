@@ -137,7 +137,6 @@ export default class Home extends Vue {
 
   &.mini {
     transform-origin: right bottom;
-    // transform: scale(0.8, 0.8);
 
     position: fixed;
     right: 2vw;

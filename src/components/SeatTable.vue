@@ -1,7 +1,15 @@
 <template>
-  <table class="seat-table" :class="{ zoom: $parent.status > 2 }">
-    <tr v-for="(row, i) in cells" :key="i">
-      <td v-for="(cell, j) in row" :key="j">
+  <div class="seat-table d-flex" :class="{ zoom: $parent.status > 2 }">
+    <div
+      v-for="(row, i) in cells"
+      :key="i"
+      class="seat-col d-flex flex-column align-stretch flex-shrink-0"
+    >
+      <div
+        v-for="(cell, j) in row"
+        :key="j"
+        class="seat flex-shrink-0 d-inline-flex flex-column justify-center"
+      >
         <span
           class="id"
           v-if="cell.stu === undefined"
@@ -10,7 +18,7 @@
           {{ cell.id === undefined ? "?" : cell.id }}
         </span>
         <span
-          class="name d-flex flex-column justify-center"
+          class="name d-inline-flex flex-column justify-center"
           v-else
           :class="{ red: cell.stu.name.zh === '張鎮揚' && false }"
         >
@@ -21,9 +29,13 @@
             {{ cell.stu.name.en }}
           </span>
         </span>
-      </td>
-    </tr>
-  </table>
+      </div>
+    </div>
+    <template v-if="$parent.status > 2">
+      <span class="teacher-table">教壇</span>
+      <span class="door">門口</span>
+    </template>
+  </div>
 </template>
 
 <script lang="ts">
@@ -125,21 +137,16 @@ export default class SeatTable extends Vue {
   position: absolute;
   right: 3vw;
 
-  $width: 64vw;
-  $height: $width * 0.6;
+  .seat {
+    $height: 7vw;
 
-  width: $width;
-  height: $height;
+    height: $height;
+    width: 10vw;
 
-  border-collapse: collapse;
-
-  // line-height: 1.3em;
-
-  td {
-    width: $width / 6;
     border: solid 0.25em burlywood;
+    margin: 0.15vh 1vw;
 
-    font-size: ($height / 6 / 2 * 0.6);
+    font-size: $height / 4;
 
     .id {
       color: wheat;
@@ -159,16 +166,23 @@ export default class SeatTable extends Vue {
   &.zoom {
     position: static;
 
-    $zoom-width: min(90vw, 150vh);
+    transform: scale(1.1);
+  }
+}
 
-    width: $zoom-width;
-    height: calc(#{$zoom-width} * 0.6);
+.teacher-table,
+.door {
+  position: fixed;
+  bottom: 0;
 
-    td {
-      width: calc(#{$zoom-width} / 6);
-      height: calc(#{$zoom-width} * 0.6 / 6);
-      font-size: calc(#{$zoom-width} / 6 / 2 * 0.37);
-    }
+  font-size: 3vw;
+
+  &.teacher-table {
+    left: -2.5em;
+  }
+
+  &.door {
+    right: -2.5em;
   }
 }
 </style>
