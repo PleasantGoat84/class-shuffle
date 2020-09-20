@@ -1,5 +1,8 @@
 <template>
-  <div class="seat-table d-flex" :class="{ zoom: $parent.status > 2 }">
+  <div
+    class="seat-table d-flex align-center justify-center"
+    :class="{ zoom: $parent.status > 2 }"
+  >
     <div
       v-for="(row, i) in cells"
       :key="i"
@@ -164,25 +167,39 @@ export default class SeatTable extends Vue {
   }
 
   &.zoom {
+    z-index: 84;
+
+    background: whitesmoke;
+    color: #262626;
+
+    height: 100%;
+    width: 100%;
+
     position: static;
 
     transform: scale(1.1);
-  }
-}
 
-.teacher-table,
-.door {
-  position: fixed;
-  bottom: 0;
-
-  font-size: 3vw;
-
-  &.teacher-table {
-    left: -2.5em;
+    .seat {
+      border-color: black;
+    }
   }
 
-  &.door {
-    right: -2.5em;
+  .teacher-table,
+  .door {
+    color: #262626;
+
+    position: absolute;
+    bottom: 7vw;
+
+    font-size: 3vw;
+
+    &.teacher-table {
+      left: 2.5em;
+    }
+
+    &.door {
+      right: 2.5em;
+    }
   }
 }
 </style>
